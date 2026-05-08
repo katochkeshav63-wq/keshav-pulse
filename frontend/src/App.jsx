@@ -5,6 +5,7 @@ import Layout from './components/layout/Layout'
 import LoadingSpinner from './components/ui/LoadingSpinner'
 
 const Home         = lazy(() => import('./pages/Home'))
+const Explore      = lazy(() => import('./pages/Explore'))
 const Reels        = lazy(() => import('./pages/Reels'))
 const Profile      = lazy(() => import('./pages/Profile'))
 const PostDetail   = lazy(() => import('./pages/PostDetail'))
@@ -37,6 +38,7 @@ const AppRoutes = () => (
 
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
         <Route index                    element={<Home />} />
+        <Route path="explore"           element={<Explore />} />
         <Route path="reels"             element={<Reels />} />
         <Route path="notifications"     element={<Notifications />} />
         <Route path="messages"          element={<Messages />} />
