@@ -7,28 +7,38 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   plugins: [react()],
+  
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
+
   server: {
+    host: '0.0.0.0',
     port: 3000,
+    allowedHosts: [
+      'keshav-pulse-2.onrender.com'
+    ],
+
     proxy: {
       '/api': {
-        target: 'https://keshav-pulse-1.onrender.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
       },
+
       '/socket.io': {
-        target: 'https://keshav-pulse-1.onrender.com',
+        target: 'http://localhost:5000',
         changeOrigin: true,
         ws: true,
       },
     },
   },
+
   build: {
     outDir: 'dist',
     sourcemap: false,
+
     rollupOptions: {
       output: {
         manualChunks: {
