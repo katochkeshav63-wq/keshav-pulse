@@ -1,143 +1,175 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { AiOutlineInstagram } from 'react-icons/ai'
 
 const Register = () => {
-  const { register } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ email: '', fullName: '', username: '', password: '' });
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { register } = useAuth()
+  const navigate = useNavigate()
 
-  const handleChange = (e) => setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  const [form, setForm] = useState({
+    email: '',
+    fullName: '',
+    username: '',
+    password: ''
+  })
+
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    if (form.password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      return;
-    }
-    if (form.username.length < 3) {
-      setError('Username must be at least 3 characters.');
-      return;
-    }
-    setLoading(true);
-    try {
-      await register(form);
-      navigate('/');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    e.preventDefault()
 
-  const isValid = form.email && form.fullName && form.username && form.password.length >= 6;
+    setError('')
+
+    if (form.password.length < 6) {
+      return setError('Password must be at least 6 characters')
+    }
+
+    if (form.username.length < 3) {
+      return setError('Username must be at least 3 characters')
+    }
+
+    setLoading(true)
+
+    try {
+      await register(form)
+      navigate('/')
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        'Registration failed'
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const isValid =
+    form.email &&
+    form.fullName &&
+    form.username &&
+    form.password.length >= 6
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-[350px]">
-        <div className="bg-white border border-gray-300 rounded px-10 py-8 mb-3">
-          {/* Logo */}
-          <div className="text-center mb-4">
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/200px-Instagram_logo.svg.png"
-              alt="Instagram"
-              className="h-12 mx-auto object-contain"
-            />
+    <div className="min-h-screen bg-black flex items-center justify-center px-4">
+
+      <div className="w-full max-w-md">
+
+        <div className="bg-[#111] border border-white/10 rounded-3xl p-8 shadow-2xl">
+
+          {/* LOGO */}
+          <div className="flex flex-col items-center mb-8">
+
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500 flex items-center justify-center shadow-lg">
+              <AiOutlineInstagram className="text-white text-4xl" />
+            </div>
+
+            <h1 className="text-white text-3xl font-bold mt-4">
+              Create Account
+            </h1>
+
+            <p className="text-gray-400 text-sm mt-2 text-center">
+              Join the community and start sharing moments.
+            </p>
+
           </div>
 
-          <p className="text-gray-500 text-center font-semibold text-base leading-5 mb-5">
-            Sign up to see photos and videos from your friends.
-          </p>
-
-          <button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1.5 px-4 rounded-lg text-sm mb-4 transition-colors">
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="white">
-              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-            </svg>
-            Log in with Facebook
-          </button>
-
-          <div className="flex items-center mb-4">
-            <div className="flex-1 border-t border-gray-300" />
-            <span className="mx-4 text-xs font-semibold text-gray-500 uppercase tracking-widest">or</span>
-            <div className="flex-1 border-t border-gray-300" />
-          </div>
-
+          {/* ERROR */}
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded text-red-600 text-xs px-3 py-2 mb-3 text-center">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-xl px-4 py-3 mb-5 text-center">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-2">
+          {/* FORM */}
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
+
             <input
-              name="email"
               type="email"
-              placeholder="Mobile number or email"
+              name="email"
+              placeholder="Email"
               value={form.email}
               onChange={handleChange}
               required
-              className="input-field text-xs"
+              className="w-full bg-white/5 border border-white/10 focus:border-pink-500 text-white rounded-xl px-4 py-3 outline-none transition"
             />
+
             <input
-              name="fullName"
               type="text"
+              name="fullName"
               placeholder="Full Name"
               value={form.fullName}
               onChange={handleChange}
               required
-              className="input-field text-xs"
+              className="w-full bg-white/5 border border-white/10 focus:border-pink-500 text-white rounded-xl px-4 py-3 outline-none transition"
             />
+
             <input
-              name="username"
               type="text"
+              name="username"
               placeholder="Username"
               value={form.username}
               onChange={handleChange}
               required
               minLength={3}
               maxLength={30}
-              className="input-field text-xs"
+              className="w-full bg-white/5 border border-white/10 focus:border-pink-500 text-white rounded-xl px-4 py-3 outline-none transition"
             />
+
             <input
-              name="password"
               type="password"
+              name="password"
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
               required
               minLength={6}
-              className="input-field text-xs"
+              className="w-full bg-white/5 border border-white/10 focus:border-pink-500 text-white rounded-xl px-4 py-3 outline-none transition"
             />
 
             <button
               type="submit"
               disabled={loading || !isValid}
-              className="w-full bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-1.5 px-4 rounded-lg text-sm transition-colors mt-2"
+              className="w-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition"
             >
-              {loading ? 'Signing up...' : 'Sign up'}
+              {loading ? 'Creating Account...' : 'Sign Up'}
             </button>
+
           </form>
 
-          <p className="text-gray-400 text-xs text-center mt-4 leading-4">
-            By signing up, you agree to our{' '}
-            <a href="#" className="font-semibold">Terms</a>,{' '}
-            <a href="#" className="font-semibold">Privacy Policy</a> and{' '}
-            <a href="#" className="font-semibold">Cookies Policy</a>.
-          </p>
+          {/* LOGIN */}
+          <div className="mt-8 text-center">
+
+            <p className="text-gray-400 text-sm">
+              Already have an account?
+            </p>
+
+            <Link
+              to="/login"
+              className="inline-block mt-2 text-pink-400 hover:text-pink-300 font-semibold transition"
+            >
+              Log In
+            </Link>
+
+          </div>
+
         </div>
 
-        <div className="bg-white border border-gray-300 rounded px-10 py-4 text-center text-sm">
-          Have an account?{' '}
-          <Link to="/login" className="text-blue-500 font-semibold hover:text-blue-700">
-            Log in
-          </Link>
-        </div>
       </div>
-    </div>
-  );
-};
 
-export default Register;
+    </div>
+  )
+}
+
+export default Register
