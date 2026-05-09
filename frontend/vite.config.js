@@ -18,7 +18,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
     allowedHosts: [
-      'keshav-pulse-2.onrender.com'
+      'keshav-pulse-1-hkua.onrender.com'
     ],
 
     proxy: {
